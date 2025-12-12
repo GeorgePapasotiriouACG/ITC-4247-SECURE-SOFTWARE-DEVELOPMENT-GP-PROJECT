@@ -1,7 +1,7 @@
 /*
  * DataInitializer - Database Initialization
  * Created by: George Papasotiriou
- * Date: 2024-01-15
+ * Date: 12/11/2025
  *
  * Initializes database with sample data on application startup
  */
@@ -98,4 +98,5 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("   📚 " + bookRepository.count() + " books");
         System.out.println("   📝 " + borrowRecordRepository.count() + " borrow records");
     }
+
 }
