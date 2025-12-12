@@ -27,8 +27,12 @@ public class HomeController {
                 "POST /api/auth/login - Login and get JWT token",
                 "GET  /api/books - Get all books (requires token)",
                 "POST /api/books - Add new book (admin only)",
+                "PUT  /api/books/{id} - Update a book (admin only)",
+                "DELETE /api/books/{id} - Delete a book (admin only)",
                 "POST /api/borrow/{id} - Borrow a book",
-                "GET  /api/user/books - Get your borrowed books"
+                "POST /api/return/{id} - Return a book",
+                "GET  /api/user/books - Get your borrowed books",
+                "GET  /api/search?q=query - Search books (⚠️ has SQLi)"
         });
         return response;
     }
