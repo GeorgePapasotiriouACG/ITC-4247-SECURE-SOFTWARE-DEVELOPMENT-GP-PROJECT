@@ -1,7 +1,7 @@
 -- ===========================================
 -- Sample Data for Library Management System
 -- Created by: George Papasotiriou
--- Date: 2024-01-15
+-- Date: 12/11/2025
 -- ===========================================
 -- Insert users with BCrypt encoded passwords
 -- BCrypt hash for 'password123': $2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKsUi
