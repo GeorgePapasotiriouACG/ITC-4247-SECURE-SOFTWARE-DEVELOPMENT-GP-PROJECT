@@ -1,0 +1,163 @@
+================================================
+    AUTOMATED API SECURITY TESTING TOOL
+    Created by: George Papasotiriou
+================================================
+
+🔐 Testing Authentication...
+   Login attempt with admin/password123
+   Status Code: 200
+✅ Authentication successful!
+   Token obtained: eyJhbGciOiJIUzI1NiJ9...
+
+🚀 Starting Security Tests...
+
+💉 Testing SQL Injection...
+   Error with payload '' OR '1'='1': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR '1'='1
+   Error with payload '' OR '1'='1' --': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR '1'='1' --
+   Error with payload '' OR '1'='1' /*': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR '1'='1' /*
+   Error with payload '' UNION SELECT null,username,password,null FROM users --': Illegal character in query at index 36: http://localhost:8080/api/search?q=' UNION SELECT null,username,password,null FROM users --
+   Error with payload ''; DROP TABLE books; --': Illegal character in query at index 37: http://localhost:8080/api/search?q='; DROP TABLE books; --
+   Error with payload '' OR 'a'='a': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR 'a'='a
+   Error with payload '' OR 1=1 --': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR 1=1 --
+   Error with payload 'admin' --': Illegal character in query at index 41: http://localhost:8080/api/search?q=admin' --
+   Error with payload '1' OR '1'='1': Illegal character in query at index 37: http://localhost:8080/api/search?q=1' OR '1'='1
+   Error with payload '' OR EXISTS(SELECT * FROM users) AND '1'='1': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR EXISTS(SELECT * FROM users) AND '1'='1
+
+🔢 Testing Type Confusion...
+   Payload: abc
+   Status: 400
+   Payload: -1
+   Status: 400
+   Payload: 0
+   Status: 400
+   Payload: 999999999999999999999999999999
+   Status: 400
+   Payload: 1.5
+   Status: 400
+   Error with payload '1; DROP TABLE books': Illegal character in path at index 35: http://localhost:8080/api/borrow/1; DROP TABLE books
+   Error with payload '<script>alert(1)</script>': Illegal character in path at index 33: http://localhost:8080/api/borrow/<script>alert(1)</script>
+   Payload: null
+   Status: 400
+   Payload: true
+   Status: 400
+   Error with payload '1' OR '1'='1': Illegal character in path at index 35: http://localhost:8080/api/borrow/1' OR '1'='1
+
+📁 Testing Path Traversal...
+   Payload: ../etc/passwd
+   Status: 200
+   Error with payload '..\..\windows\system32\config\SAM': Illegal character in query at index 37: http://localhost:8080/api/search?q=..\..\windows\system32\config\SAM
+   Payload: ../../../etc/passwd
+   Status: 200
+   Payload: ....//....//etc/passwd
+   Status: 200
+   Payload: %2e%2e%2fetc%2fpasswd
+   Status: 200
+   Payload: ..%2f..%2f..%2fetc%2fpasswd
+   Status: 200
+   Payload: ..%252f..%252f..%252fetc%252fpasswd
+   Status: 200
+
+🔓 Testing Authorization Bypass...
+   Testing admin endpoint with user token
+   Status: 403
+   ✅ Authorization working correctly
+
+📝 Testing Input Validation...
+   Test case: {author=BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB, isbn=123, title=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA}
+   Status: 400
+   Response: {"success":false,"error":"Failed to add book: could not execute statement [Value too long for column
+   Test case: {author=Author'); DROP TABLE books; --, isbn=123' OR '1'='1, title=<script>alert('XSS')</script>}
+   Status: 201
+   Response: {"success":true,"book":{"id":10,"title":"<script>alert('XSS')</script>","author":"Author'); DROP TAB
+   Test case: {author=, isbn=, title=}
+   Status: 201
+   Response: {"success":true,"book":{"id":11,"title":"","author":"","isbn":"","available":true},"message":"Book a
+
+🌋 Testing Extreme Inputs...
+   Error with large input: restricted header name: "Content-Length"
+   Special characters input
+   Status: 400
+
+🎯 Testing Mass Assignment...
+   Trying to set admin role during registration
+   Status: 200
+   Response: {"success":true,"message":"User registered successfully"}
+   ⚠️  New user created successfully
+
+⚠️  Testing Error Handling...
+   Malformed JSON
+   Status: 400
+   Response: {"timestamp":"2025-12-12T18:56:12.247+00:00","status":400,"error":"Bad Request","path":"/api/books"}
+   Non-existent endpoint
+   Status: 404
+
+🔄 Testing PUT Endpoint (Update Book)...
+   Test case 1: {author=Updated Author, isbn=999-999-999, available=true, title=Updated Title}
+   Status: 200
+   Response: {"success":true,"book":{"id":1,"title":"Updated Title","author":"Updated Author","isbn":"999-999-999
+   Test case 2: {author=Author'); DROP TABLE books; --, isbn=123' OR '1'='1, title=<script>alert('XSS')</script>}
+   Status: 200
+   Response: {"success":true,"book":{"id":1,"title":"<script>alert('XSS')</script>","author":"Author'); DROP TABL
+   Test case 3: {author=BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB, isbn=CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC, title=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA}
+   Status: 400
+   Response: {"success":false,"error":"Failed to update book: could not execute statement [Value too long for col
+   Test case 4: {author=true, available=not_a_boolean, title=12345}
+   Status: 400
+   Response: {"success":false,"error":"Failed to update book: class java.lang.Integer cannot be cast to class jav
+   Test case 5: {author=, isbn=, title=}
+   Status: 200
+   Response: {"success":true,"book":{"id":1,"title":"","author":"","isbn":"","available":true},"message":"Book up
+
+   🔢 Testing PUT Type Confusion (Invalid IDs)...
+     ID: abc
+     Status: 400
+     ID: -1
+     Status: 400
+     ID: 0
+     Status: 400
+     ID: 999999999999999999999999999999
+     Status: 400
+     ID: 1.5
+     Status: 400
+     Error with ID '1; DROP TABLE books; --': Illegal character in path at index 34: http://localhost:8080/api/books/1; DROP TABLE books; --
+     Error with ID '<script>alert(1)</script>': Illegal character in path at index 32: http://localhost:8080/api/books/<script>alert(1)</script>
+     ID: null
+     Status: 400
+     ID: true
+     Status: 400
+     Error with ID '' OR '1'='1': Illegal character in path at index 33: http://localhost:8080/api/books/' OR '1'='1
+
+🗑️  Testing DELETE Endpoint...
+   Test 1: Normal delete of book 12
+   Status: 200
+   Response: {"success":true,"message":"Book deleted successfully","bookId":12}
+
+   🔢 Testing DELETE Type Confusion...
+     ID: abc
+     Status: 400
+     ID: -1
+     Status: 400
+     ID: 0
+     Status: 400
+     ID: 999999999999999999999999999999
+     Status: 400
+     ID: 1.5
+     Status: 400
+     Error with ID '1; DROP TABLE books; --': Illegal character in path at index 34: http://localhost:8080/api/books/1; DROP TABLE books; --
+     Error with ID '<script>alert(1)</script>': Illegal character in path at index 32: http://localhost:8080/api/books/<script>alert(1)</script>
+     ID: null
+     Status: 400
+     ID: true
+     Status: 400
+     Error with ID '' OR '1'='1': Illegal character in path at index 33: http://localhost:8080/api/books/' OR '1'='1
+     ID: ../etc/passwd
+     Status: 400
+     Error with ID '1 OR 1=1': Illegal character in path at index 33: http://localhost:8080/api/books/1 OR 1=1
+
+   Test 3: Delete non-existent book (999999)
+   Status: 400
+   Response: {"success":false,"error":"Book not found with ID: 999999","timestamp":1765565775237}
+
+================================================
+          TESTING COMPLETE!
+================================================
