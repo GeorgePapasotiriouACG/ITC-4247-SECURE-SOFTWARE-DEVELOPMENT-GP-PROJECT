@@ -1,7 +1,7 @@
 /*
  * PasswordConfig - Password Encoder Configuration
  * Created by: George Papasotiriou
- * Date: 2024-01-15
+ * Date: 12/11/2025
  *
  * Separate configuration for PasswordEncoder to avoid circular dependencies
  */
