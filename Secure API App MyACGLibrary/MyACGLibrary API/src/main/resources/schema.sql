@@ -1,7 +1,7 @@
 -- ===========================================
 -- Database Schema for Library Management System
 -- Created by: George Papasotiriou
--- Date: 2024-01-15
+-- Date: 12/11/2025
 -- ===========================================
 
 -- Drop tables if they exist
