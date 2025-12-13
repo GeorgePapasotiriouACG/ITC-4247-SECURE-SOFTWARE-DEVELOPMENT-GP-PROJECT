@@ -1,3 +1,14 @@
 This project was created by George Papasotiriou for the ITC-4247-SECURE-SOFTWARE-DEVELOPMENT course in 2025. Its a local API Application with generic vulnerabilities along with a security testing tool (Fuzzer) to display those vulnerabilities. It was designed for Intelij IDEA. 
 IMPORTANT BEFORE STARTING:
 Download the releashe or the Final Project.rar to use the project in InteliJ IDEA.
+
+OR 
+
+Use Secure API App MyACGLibrary folder directly from github repo:
+Step 1: https://media.discordapp.net/attachments/1208143224137318411/1449228683708731463/image.png?ex=693e22e3&is=693cd163&hm=d4b5831482c34a4094953185750dbcf12e182115c745d424ae1d870fdce495aa&=&format=webp&quality=lossless
+Step 2: https://cdn.discordapp.com/attachments/1208143224137318411/1449228831431983124/image.png?ex=693e2306&is=693cd186&hm=45ab179ed48584ac7102e5faf78a79a2ad6a1fc9afb40d49fd1a3b4083a7421a&
+Step 3: https://cdn.discordapp.com/attachments/1208143224137318411/1449229590244622367/image.png?ex=693e23bb&is=693cd23b&hm=b72017ef0cf35e7d3724001bcf93941dca3369a9c512718e5cdc59e9f5a52903&
+Step 4: https://cdn.discordapp.com/attachments/1208143224137318411/1449229963273179310/image.png?ex=693e2414&is=693cd294&hm=f8431b0a60109d4cb2c78e0a7eb1c031c1b35d5498b4aba9df5289635da291b1&
+Step 5: https://cdn.discordapp.com/attachments/1208143224137318411/1449230189409210479/image.png?ex=693e244a&is=693cd2ca&hm=1bfd0ebbf1768f9a94c60778d0363752c3ff9a307d822ae4528dcaf32172f06b& 
+Step 6: https://cdn.discordapp.com/attachments/1208143224137318411/1449230378744156231/image.png?ex=693e2477&is=693cd2f7&hm=020e58ffb2a5e9b481d1183995b63fa61872e205e2872b23d347dbc2d2502ccb&
+And run
