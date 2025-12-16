@@ -1,6 +1,6 @@
-This project was created by George Papasotiriou for the ITC-4247-SECURE-SOFTWARE-DEVELOPMENT course in 2025. Its a local API Application with generic vulnerabilities along with a security testing tool (Fuzzer) to display those vulnerabilities. It was designed for Intelij IDEA. 
+This project was created by George Papasotiriou for the ITC-4247-SECURE-SOFTWARE-DEVELOPMENT course in 2025. Its a local API Application with generic vulnerabilities along with a security testing tool (SecurityTester.java) (Fuzzer) to display those vulnerabilities. It was designed for Intelij IDEA. 
 IMPORTANT BEFORE STARTING:
-Download the releashe or the Final Project.rar to use the project in InteliJ IDEA.
+Download the latest releashe or the Final Project GP.rar to use the project in InteliJ IDEA.
 
 OR 
 
