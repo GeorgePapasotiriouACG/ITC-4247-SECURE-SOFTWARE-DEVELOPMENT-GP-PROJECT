@@ -1,6 +1,6 @@
 This project was created by George Papasotiriou for the ITC-4247-SECURE-SOFTWARE-DEVELOPMENT course in 2025. Its a local API Application with generic vulnerabilities along with a security testing tool (SecurityTester.java) (Fuzzer) to display those vulnerabilities. It was designed for Intelij IDEA. 
 IMPORTANT BEFORE STARTING:
-Download the latest releashe or the Final Project V2.rar to use the project in InteliJ IDEA.
+Download the latest releashe or the Final Project V3.rar to use the project in InteliJ IDEA.
 
 OR 
 
@@ -21,3 +21,5 @@ Final Project V2 featured a local database that worked in InteliJ IDEA, however 
 Final Project V3 features a fully working Database
 
 IMPORTANT: THE SECURITY TOOL CAN BE FOUND WITHIN THE INTELIJ IDEA PROJECT UNDER THE NAME SecurityTester.java RUN IT DIRECTLY FROM INTELIJ AFTER RUNNING MyACGLibrary
+
+I would recommend downloading Final Project V3.rar either from releashes or from the repo files for use.
