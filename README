@@ -18,3 +18,4 @@ DataInitializer.java --> Initializes database with sample data on application st
 Major updates:
 Final Project V1 featured a Memory H2 Database
 Final Project V2 featured a local database that worked in InteliJ IDEA, however some errors were observed + it wouldn't load DB without DataInitializer.java
+Final Project V3 features a fully working Database
