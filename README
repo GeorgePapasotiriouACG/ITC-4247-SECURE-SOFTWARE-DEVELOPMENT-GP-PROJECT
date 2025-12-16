@@ -13,4 +13,4 @@ Step 5: https://cdn.discordapp.com/attachments/1208143224137318411/1449230189409
 Step 6: https://cdn.discordapp.com/attachments/1208143224137318411/1449230378744156231/image.png?ex=693e2477&is=693cd2f7&hm=020e58ffb2a5e9b481d1183995b63fa61872e205e2872b23d347dbc2d2502ccb&
 And run
 
-ADDITIONS AFTER 1st SUBMISSION: ADDED NEW AND IMPROVED Fuzzer tool SecurityTester.java, just copy paste on your project.
+DataInitializer.java --> Initializes database with sample data on application startup (Delete if you want to use DB to its fullest and not reset it for testing purposes)
