@@ -14,3 +14,7 @@ Step 6: https://cdn.discordapp.com/attachments/1208143224137318411/1449230378744
 And run
 
 DataInitializer.java --> Initializes database with sample data on application startup (Delete if you want to use DB to its fullest and not reset it for testing purposes)
+
+Major updates:
+Final Project V1 featured a Memory H2 Database
+Final Project V2 featured a local database that worked in InteliJ IDEA, however some errors were observed + it wouldn't load DB without DataInitializer.java
