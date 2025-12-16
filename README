@@ -18,6 +18,6 @@ DataInitializer.java --> Initializes database with sample data on application st
 Major updates:
 Final Project V1 featured a Memory H2 Database 
 Final Project V2 featured a local database that worked in InteliJ IDEA, however some errors were observed + it wouldn't load DB without DataInitializer.java (Kept logs = Not Vulnerable to Repudiation attacks)
-Final Project V3 features a fully working Database, however doesnt keep logs and vulnerable to Repudiation attacks
+Final Project V3 features a fully working Database
 
 IMPORTANT: THE SECURITY TOOL CAN BE FOUND WITHIN THE INTELIJ IDEA PROJECT UNDER THE NAME SecurityTester.java RUN IT DIRECTLY FROM INTELIJ AFTER RUNNING MyACGLibrary
