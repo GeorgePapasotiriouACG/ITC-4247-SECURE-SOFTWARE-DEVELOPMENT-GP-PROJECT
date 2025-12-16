@@ -16,6 +16,6 @@ And run
 DataInitializer.java --> Initializes database with sample data on application startup (Delete if you want to use DB to its fullest and not reset it for testing purposes)
 
 Major updates:
-Final Project V1 featured a Memory H2 Database
-Final Project V2 featured a local database that worked in InteliJ IDEA, however some errors were observed + it wouldn't load DB without DataInitializer.java
+Final Project V1 featured a Memory H2 Database 
+Final Project V2 featured a local database that worked in InteliJ IDEA, however some errors were observed + it wouldn't load DB without DataInitializer.java (Kept logs = Not Vulnerable to Repudiation attacks)
 Final Project V3 features a fully working Database, however doesnt keep logs and vulnerable to Repudiation attacks
