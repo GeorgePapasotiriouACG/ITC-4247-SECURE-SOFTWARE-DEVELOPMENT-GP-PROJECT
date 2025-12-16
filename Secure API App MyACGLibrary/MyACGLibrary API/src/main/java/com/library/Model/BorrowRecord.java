@@ -11,6 +11,7 @@ package com.library.Model;
 // IMPORTANT: Use jakarta.persistence, not javax.persistence
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 // This class tracks when users borrow and return books
 @Entity
@@ -33,8 +34,17 @@ public class BorrowRecord {
     // Date when book was borrowed (auto-set to today)
     private LocalDate borrowDate = LocalDate.now();
 
+    // Due date (14 days from borrow date)
+    private LocalDate dueDate = LocalDate.now().plusDays(14);
+
     // Date when book was returned (null if not returned yet)
     private LocalDate returnDate;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     // Empty constructor for JPA
     public BorrowRecord() {}
@@ -44,7 +54,10 @@ public class BorrowRecord {
         this.book = book;
         this.user = user;
         this.borrowDate = LocalDate.now();
+        this.dueDate = LocalDate.now().plusDays(14);
         this.returnDate = null; // Not returned yet
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     // ---------- GETTERS AND SETTERS ----------
@@ -61,8 +74,20 @@ public class BorrowRecord {
     public LocalDate getBorrowDate() { return borrowDate; }
     public void setBorrowDate(LocalDate borrowDate) { this.borrowDate = borrowDate; }
 
+    public LocalDate getDueDate() { return dueDate; }
+    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
+
     public LocalDate getReturnDate() { return returnDate; }
-    public void setReturnDate(LocalDate returnDate) { this.returnDate = returnDate; }
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
     // Check if book has been returned
     public boolean isReturned() {
