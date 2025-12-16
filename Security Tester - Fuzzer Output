@@ -20,22 +20,22 @@
 💥 Testing Database Manipulation...
    Payload: '; INSERT INTO users (username, password, role) VA...
    Status: 200
-   Response time: 14ms
+   Response time: 19ms
    Payload: '; UPDATE users SET password='$2a$10$hacked' WHERE...
    Status: 200
-   Response time: 7ms
+   Response time: 10ms
    Payload: '; DELETE FROM books WHERE id=1; --...
    Status: 200
-   Response time: 7ms
+   Response time: 9ms
    Payload: '; DROP TABLE users; --...
    Status: 200
-   Response time: 8ms
+   Response time: 9ms
    Payload: '; DROP TABLE books; --...
    Status: 200
-   Response time: 7ms
+   Response time: 8ms
    Payload: '; CREATE TABLE hacked (id INT, data VARCHAR(255))...
    Status: 200
-   Response time: 7ms
+   Response time: 8ms
    Payload: '; GRANT ALL ON users TO PUBLIC; --...
    Status: 200
    Response time: 8ms
@@ -57,16 +57,16 @@
 👁️  Testing Blind SQL Injection...
    Payload: ' AND 1=1 --
    Condition true: true
-   Response time: 9ms
+   Response time: 8ms
    Payload: ' AND 1=2 --
    Condition true: true
-   Response time: 7ms
+   Response time: 8ms
    Payload: ' AND (SELECT COUNT(*) FROM users) > 0 --
    Condition true: true
    Response time: 9ms
    Payload: ' AND (SELECT LENGTH(password) FROM users WHERE username='admin') > 10 --
    Condition true: true
-   Response time: 7ms
+   Response time: 8ms
    Payload: ' AND EXISTS(SELECT * FROM users WHERE username='admin') --
    Condition true: true
    Response time: 7ms
@@ -76,11 +76,11 @@
 
 ⏱️  Testing Time-Based SQL Injection...
    Payload: '; CALL SLEEP(3000); --...
-   Response time: 9ms
+   Response time: 8ms
    Payload: '; SELECT * FROM books WHERE SLEEP(3)=0;...
    Response time: 8ms
    Payload: ' AND IF((SELECT COUNT(*) FROM users)>0,...
-   Response time: 9ms
+   Response time: 11ms
    Payload: ' AND (SELECT CASE WHEN (username='admin...
    Response time: 8ms
 
@@ -193,8 +193,7 @@
 
 🔓 Testing Authorization Bypass...
    Testing admin endpoint with user token
-   Status: 403
-   ✅ Authorization working correctly
+   Status: 201
 
 📝 Testing Input Validation...
    Test case: {author=BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB, isbn=123, title=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA}
@@ -202,10 +201,10 @@
    Response: {"success":false,"error":"Failed to add book: could not execute statement [Value too long for column
    Test case: {author=Author'); DROP TABLE books; --, isbn=123' OR '1'='1, title=<script>alert('XSS')</script>}
    Status: 201
-   Response: {"success":true,"book":{"id":10,"title":"<script>alert('XSS')</script>","author":"Author'); DROP TAB
+   Response: {"success":true,"book":{"id":39,"title":"<script>alert('XSS')</script>","author":"Author'); DROP TAB
    Test case: {author=, isbn=, title=}
    Status: 201
-   Response: {"success":true,"book":{"id":11,"title":"","author":"","isbn":"","available":true},"message":"Book a
+   Response: {"success":true,"book":{"id":40,"title":"","author":"","isbn":"","available":true,"createdAt":"2025-
 
 🌋 Testing Extreme Inputs...
    Error with large input: restricted header name: "Content-Length"
@@ -214,14 +213,14 @@
 
 🎯 Testing Mass Assignment...
    Trying to set admin role during registration
-   Status: 200
-   Response: {"success":true,"message":"User registered successfully"}
+   Status: 400
+   Response: {"success":false,"error":"Username already exists"}
    ⚠️  New user created successfully
 
 ⚠️  Testing Error Handling...
    Malformed JSON
    Status: 400
-   Response: {"timestamp":"2025-12-16T01:27:05.578+00:00","status":400,"error":"Bad Request","path":"/api/books"}
+   Response: {"timestamp":"2025-12-16T05:18:52.784+00:00","status":400,"error":"Bad Request","path":"/api/books"}
    Non-existent endpoint
    Status: 404
 
@@ -234,7 +233,7 @@
 
 💼 Testing Business Logic Vulnerabilities...
    Concurrent borrow #1 - Status: 400
-   Concurrent borrow #2 - Status: 400
+   Concurrent borrow #2 - Status: 200
    Concurrent borrow #3 - Status: 400
    Return non-borrowed book - Status: 400
 
@@ -253,7 +252,7 @@
    Response: {"success":false,"error":"Failed to update book: class java.lang.Integer cannot be cast to class jav
    Test case 5: {author=, isbn=, title=}
    Status: 200
-   Response: {"success":true,"book":{"id":1,"title":"","author":"","isbn":"","available":true},"message":"Book up
+   Response: {"success":true,"book":{"id":1,"title":"","author":"","isbn":"","available":true,"createdAt":"2025-1
 
    🔢 Testing PUT Type Confusion (Invalid IDs)...
      ID: abc
@@ -275,9 +274,9 @@
      Error with ID '' OR '1'='1': Illegal character in path at index 33: http://localhost:8080/api/books/' OR '1'='1
 
 🗑️  Testing DELETE Endpoint...
-   Test 1: Normal delete of book 12
+   Test 1: Normal delete of book 41
    Status: 200
-   Response: {"success":true,"message":"Book deleted successfully","bookId":12}
+   Response: {"success":true,"message":"Book deleted successfully","bookId":41}
 
    🔢 Testing DELETE Type Confusion...
      ID: abc
@@ -303,7 +302,7 @@
 
    Test 3: Delete non-existent book (999999)
    Status: 400
-   Response: {"success":false,"error":"Book not found with ID: 999999","timestamp":1765848429218}
+   Response: {"success":false,"error":"Book not found with ID: 999999","timestamp":1765862336477}
 
 ==================================================
           SECURITY TESTING REPORT
@@ -366,5 +365,5 @@
 
 ==================================================
         COMPREHENSIVE TESTING COMPLETE!
-        2025-12-16T03:27:09.223869700
+        2025-12-16T07:18:56.480162900
 ==================================================
