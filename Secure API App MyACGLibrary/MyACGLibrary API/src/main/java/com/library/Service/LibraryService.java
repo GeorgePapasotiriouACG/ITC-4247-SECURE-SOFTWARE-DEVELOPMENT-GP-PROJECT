@@ -139,7 +139,7 @@ public class LibraryService {
     // ---------- INTENTIONALLY VULNERABLE METHOD! ----------
     // This method has SQL injection vulnerability
     // DO NOT USE THIS IN REAL APPLICATIONS!
-    // We're including it for security testing purposes
+    // I am including it for security testing purposes
     // WARNING: This is unsafe! Direct string concatenation in SQL
     // Example attack: query = "' OR '1'='1" would return ALL books
     // UNSAFE: Vulnerable to SQL injection
