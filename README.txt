@@ -1,0 +1,1 @@
+ToMyPizza! is a comprehensive pizza order management system built as a frontend web application for a fictional pizza delivery business in Athens, Greece (Grabias Street). The application combines a customer self-service website with an internal order management system, featuring real-time tracking, analytics, and a fully responsive and movern design.
